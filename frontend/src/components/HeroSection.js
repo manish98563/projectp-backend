@@ -113,10 +113,10 @@ export default function HeroSection() {
             data-testid="hero-headline"
             className="text-[44px] md:text-[72px] lg:text-[96px] font-bold leading-[0.98] tracking-[-1px] text-white mb-8"
           >
-            Design the
-            <br />
-            future of
-            <br />
+            Design the{" "}
+            <br className="hidden sm:block" />
+            future of{" "}
+            <br className="hidden sm:block" />
             <span className="text-[#FF7A2A]">AI products.</span>
           </motion.h1>
 

@@ -199,7 +199,7 @@ export default function Apply() {
                 <option value="">General Application</option>
                 {jobs.map((job) => (
                   <option key={job.id} value={job.id}>
-                    {job.title} — {job.location}
+                    {`${job.title} — ${job.location}`}
                   </option>
                 ))}
               </select>
