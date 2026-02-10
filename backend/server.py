@@ -47,6 +47,7 @@ class HealthResponse(BaseModel):
 class JobCreate(BaseModel):
     title: str
     location: str
+    type: str = "Full-time"
     seniority: str
     description: str
     tags: List[str] = []
@@ -54,6 +55,7 @@ class JobCreate(BaseModel):
 class JobUpdate(BaseModel):
     title: Optional[str] = None
     location: Optional[str] = None
+    type: Optional[str] = None
     seniority: Optional[str] = None
     description: Optional[str] = None
     tags: Optional[List[str]] = None
@@ -64,6 +66,7 @@ class JobResponse(BaseModel):
     slug: str
     title: str
     location: str
+    type: str = "Full-time"
     seniority: str
     description: str
     tags: List[str]
@@ -86,7 +89,9 @@ class AdminLogin(BaseModel):
     password: str
 
 class TokenResponse(BaseModel):
+    success: bool = True
     token: str
+    admin: dict = {}
 
 class EmailLog(BaseModel):
     id: str
@@ -310,7 +315,11 @@ async def admin_login(creds: AdminLogin):
     if not bcrypt.checkpw(creds.password.encode('utf-8'), admin["password"].encode('utf-8')):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_jwt_token(admin["email"])
-    return {"token": token}
+    return {
+        "success": True,
+        "token": token,
+        "admin": {"id": admin.get("id", ""), "email": admin["email"]}
+    }
 
 @api_router.get("/admin/applications", response_model=List[ApplicationResponse])
 async def get_applications(admin=Depends(get_current_admin)):
