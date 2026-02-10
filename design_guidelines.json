@@ -1,0 +1,176 @@
+{
+  "identity": {
+    "persona": "E1",
+    "mission": "Create a top 1% dark mode glassmorphic experience that feels innovative and precise.",
+    "principles": [
+      "Fusion over Imitation: Mix AI tech aesthetics with architectural precision.",
+      "Emotion First: Evoke 'Future-Ready' and 'Trusted Intelligence'.",
+      "Content is King: Every pixel serves the narrative of innovation.",
+      "Zoom In: Focus on details (glass edges, subtle glows).",
+      "Negative Space: Use it to create a premium feel."
+    ],
+    "anti_patterns": [
+      "Purple/Teal primary buttons (Use Accent Orange)",
+      "Boring Grids (Use Bento/Tetris)",
+      "Flat design (Use Glassmorphism)",
+      "Generic center alignment (Use asymmetry)"
+    ]
+  },
+  "brand": {
+    "name": "Project P Innovations",
+    "logo_text": "Project P",
+    "logo_style": "Hexagon outline + text. Bold 'Project P', normal 'Innovations'.",
+    "tone": "Innovative, Precise, Trusted, High-Tech"
+  },
+  "theme": {
+    "mode": "dark",
+    "glassmorphism": {
+      "blur": "14px",
+      "bg": "rgba(255,255,255,0.04)",
+      "border": "rgba(255,255,255,0.06)",
+      "shadow": "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+    }
+  },
+  "colors": {
+    "tokens": {
+      "dark-bg": "#071020",
+      "accent": "#FF7A2A",
+      "muted-innov": "#9FB0C8",
+      "glass-bg": "rgba(255,255,255,0.04)",
+      "glass-border": "rgba(255,255,255,0.06)"
+    },
+    "tailwind_map": {
+      "bg-background": "bg-[#071020]",
+      "text-foreground": "text-white",
+      "bg-primary": "bg-[#FF7A2A]",
+      "text-primary-foreground": "text-white",
+      "border-border": "border-[rgba(255,255,255,0.06)]",
+      "bg-muted": "bg-[#9FB0C8]/10",
+      "text-muted-foreground": "text-[#9FB0C8]"
+    },
+    "rules": [
+      "Use #FF7A2A for primary CTAs and key highlights ONLY.",
+      "Background must be #071020 (Deep Blue/Black).",
+      "Glass elements must have a 1px border of rgba(255,255,255,0.06).",
+      "Avoid gradients on text; keep text high contrast white or #9FB0C8."
+    ]
+  },
+  "typography": {
+    "font_family": "Inter, sans-serif",
+    "headings": {
+      "style": "Inter",
+      "weight": "font-semibold or font-light",
+      "tracking": "tracking-tight (-0.02em to -0.05em)",
+      "sizes": {
+        "h1": "text-5xl md:text-7xl",
+        "h2": "text-3xl md:text-5xl",
+        "h3": "text-xl md:text-3xl"
+      }
+    },
+    "body": {
+      "style": "Inter",
+      "weight": "font-normal",
+      "tracking": "tracking-normal",
+      "sizes": {
+        "lead": "text-lg md:text-xl",
+        "base": "text-base",
+        "small": "text-sm"
+      }
+    },
+    "rules": [
+      "Use 'tracking-tighter' for all headings above 32px.",
+      "Use 'text-[#9FB0C8]' for secondary text.",
+      "Never use pure white #FFFFFF for large blocks of body text; use opacity 90%."
+    ]
+  },
+  "layout": {
+    "container": "max-w-[1180px] mx-auto px-4 md:px-8",
+    "spacing": {
+      "section": "py-24 md:py-32",
+      "element": "gap-8 md:gap-12"
+    },
+    "grids": {
+      "marketing": "Use 'Tetris' grid: mix col-span-full, col-span-6, col-span-4.",
+      "dashboard": "Use 'High Density' grid: compact, gap-4, maximize screen real estate."
+    },
+    "glass_cards": {
+      "style": "backdrop-blur-[14px] bg-white/5 border border-white/5 rounded-xl",
+      "hover": "hover:bg-white/10 transition-colors duration-300"
+    }
+  },
+  "components": {
+    "path": "/app/frontend/src/components/ui",
+    "strategy": {
+      "marketing": "Use raw HTML/Tailwind for layout, Shadcn for interactive forms.",
+      "dashboard": "Use Shadcn Table, Card, Form, Dialog for functionality."
+    },
+    "overrides": [
+      "Button: Use pill shapes or sharp edges. Primary = Orange.",
+      "Input: Glass background, white text, subtle border.",
+      "Card: Remove default bg-card, use glass styles."
+    ],
+    "shadcn_map": {
+      "button": "Button",
+      "input": "Input",
+      "card": "Card, CardHeader, CardContent",
+      "dialog": "Dialog",
+      "sheet": "Sheet",
+      "table": "Table",
+      "form": "Form"
+    }
+  },
+  "media": {
+    "images": {
+      "hero_bg": "https://images.unsplash.com/photo-1630335610891-e510082aafbd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMG5ldHdvcmslMjBub2RlcyUyMGRhcmslMjBibHVlJTIwb3JhbmdlJTIwZ2xvd2luZ3xlbnwwfHx8fDE3NzA3MDU2NDl8MA&ixlib=rb-4.1.0&q=85",
+      "team_work": "https://images.unsplash.com/photo-1760611656007-f767a8082758?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwc29mdHdhcmUlMjBlbmdpbmVlcmluZyUyMHRlYW0lMjB3b3JraW5nJTIwdG9nZXRoZXIlMjBpbiUyMG1vZGVybiUyMG9mZmljZXxlbnwwfHx8fDE3NzA3MDU2NjJ8MA&ixlib=rb-4.1.0&q=85",
+      "office_people": "https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwc29mdHdhcmUlMjBlbmdpbmVlcmluZyUyMHRlYW0lMjB3b3JraW5nJTIwdG9nZXRoZXIlMjBpbiUyMG1vZGVybiUyMG9mZmljZXxlbnwwfHx8fDE3NzA3MDU2NjJ8MA&ixlib=rb-4.1.0&q=85"
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px, size 24px or 32px for features."
+    }
+  },
+  "motion": {
+    "library": "framer-motion",
+    "animations": {
+      "fade_up": {
+        "initial": { "opacity": 0, "y": 20 },
+        "animate": { "opacity": 1, "y": 0 },
+        "transition": { "duration": 0.5 }
+      },
+      "stagger": {
+        "container": { "hidden": { "opacity": 0 }, "show": { "opacity": 1, "transition": { "staggerChildren": 0.1 } } },
+        "item": { "hidden": { "opacity": 0, "y": 10 }, "show": { "opacity": 1, "y": 0 } }
+      },
+      "hero_gradient": "Animate background position of gradient mesh."
+    }
+  },
+  "pages": {
+    "home": {
+      "sections": ["Hero", "Services (Glass Grid)", "About Preview"],
+      "elements": "Animated gradient bg, Staggered glass cards."
+    },
+    "careers": {
+      "layout": "Sidebar Filter (Left) + Job List (Right)",
+      "style": "Clean list items with hover reveal effects."
+    },
+    "apply": {
+      "form": "Multi-step or long form. Resume upload (File Input).",
+      "style": "Centered glass container."
+    },
+    "admin": {
+      "login": "Centered glass card.",
+      "dashboard": "Dense table view, top stats cards."
+    }
+  },
+  "universal_guidelines": [
+    "Do NOT use 'transition: all'. Animate specific properties.",
+    "Do NOT center align the app container.",
+    "Use 'sonner' for toasts.",
+    "Ensure all interactive elements have 'data-testid'.",
+    "Respect 'prefers-reduced-motion'.",
+    "Interactive elements MUST have distinct hover/focus states.",
+    "Use 2-3x more spacing than typical.",
+    "Dark theme only - no light mode toggle."
+  ]
+}
