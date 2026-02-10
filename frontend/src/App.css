@@ -1,19 +1,75 @@
-/* Animated gradient background for hero */
-.hero-gradient {
-    background: linear-gradient(135deg, #071020, #0a1628, #0d1a30, #071020);
-    background-size: 300% 300%;
-    animation: gradientShift 15s ease infinite;
+/* ===== ANIMATED HERO GRADIENT BACKGROUND ===== */
+.hero-gradient-bg {
+    background: 
+        radial-gradient(ellipse at 30% 40%, rgba(10, 22, 40, 0.8), transparent 60%),
+        radial-gradient(ellipse at 70% 60%, rgba(13, 27, 46, 0.6), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(6, 20, 40, 0.4), transparent 70%),
+        linear-gradient(135deg, #071020 0%, #0a1628 25%, #0d1b2e 50%, #091422 75%, #071020 100%);
+    background-size: 400% 400%;
+    animation: heroGradientShift 15s ease infinite;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    25% { background-position: 50% 100%; }
+@keyframes heroGradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 50% 0%; }
     50% { background-position: 100% 50%; }
-    75% { background-position: 50% 0%; }
-    100% { background-position: 0% 50%; }
+    75% { background-position: 50% 100%; }
 }
 
-/* Grid overlay for hero */
+/* ===== PARTICLE OVERLAY ===== */
+.hero-particles {
+    background-image:
+        radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.08), transparent),
+        radial-gradient(1px 1px at 30% 65%, rgba(135,206,235,0.06), transparent),
+        radial-gradient(2px 2px at 55% 15%, rgba(255,122,42,0.05), transparent),
+        radial-gradient(1px 1px at 70% 80%, rgba(100,180,255,0.06), transparent),
+        radial-gradient(1.5px 1.5px at 85% 35%, rgba(255,255,255,0.05), transparent),
+        radial-gradient(1px 1px at 45% 90%, rgba(135,206,235,0.04), transparent),
+        radial-gradient(2px 2px at 20% 50%, rgba(100,180,255,0.03), transparent),
+        radial-gradient(1px 1px at 90% 55%, rgba(255,122,42,0.04), transparent);
+    background-size: 250px 250px, 300px 300px, 350px 350px, 200px 200px, 280px 280px, 320px 320px, 260px 260px, 310px 310px;
+    animation: particleDrift 30s linear infinite;
+}
+
+@keyframes particleDrift {
+    0% { background-position: 0 0, 50px 50px, 100px 0, 0 100px, 150px 50px, 50px 150px, 200px 100px, 100px 200px; }
+    100% { background-position: 250px 250px, 300px 300px, 350px 350px, 200px 200px, 400px 300px, 350px 400px, 450px 350px, 400px 450px; }
+}
+
+/* ===== FLOATING ORB ANIMATIONS ===== */
+@keyframes floatSlow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(15px, -20px) scale(1.05); }
+    66% { transform: translate(-10px, 10px) scale(0.95); }
+}
+
+@keyframes floatSlower {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, -15px) scale(1.08); }
+}
+
+@keyframes floatReverse {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(10px, 15px); }
+    50% { transform: translate(-15px, 5px); }
+    75% { transform: translate(5px, -10px); }
+}
+
+.animate-float-slow { animation: floatSlow 12s ease-in-out infinite; }
+.animate-float-slower { animation: floatSlower 18s ease-in-out infinite; }
+.animate-float-reverse { animation: floatReverse 15s ease-in-out infinite; }
+
+/* ===== SCROLLING TICKER ===== */
+.ticker-track {
+    animation: tickerScroll 40s linear infinite;
+}
+
+@keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.333%); }
+}
+
+/* ===== GRID OVERLAY (for hero) ===== */
 .grid-overlay {
     background-image:
         linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
@@ -21,7 +77,7 @@
     background-size: 60px 60px;
 }
 
-/* Glass card base */
+/* ===== GLASS CARD BASE ===== */
 .glass-card {
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(14px);
@@ -40,7 +96,7 @@
     background: rgba(255,255,255,0.08);
 }
 
-/* Glass input styling */
+/* ===== GLASS INPUT ===== */
 .glass-input {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
@@ -60,26 +116,23 @@
     color: rgba(255,255,255,0.35);
 }
 
-/* Glow dot effect */
-.glow-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #FF7A2A;
-    box-shadow: 0 0 8px rgba(255, 122, 42, 0.6);
+/* Select option styling for dark theme */
+.glass-input option {
+    background: #0d1b2e;
+    color: white;
 }
 
-/* Reduced motion */
+/* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
-    .hero-gradient {
-        animation: none;
+    .hero-gradient-bg,
+    .hero-particles,
+    .ticker-track,
+    .animate-float-slow,
+    .animate-float-slower,
+    .animate-float-reverse {
+        animation: none !important;
     }
     .glass-card-hover:hover {
         transform: none;
-    }
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
     }
 }

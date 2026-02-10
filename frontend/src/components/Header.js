@@ -11,18 +11,18 @@ const navLinks = [
 
 const Logo = () => (
   <Link to="/" className="flex items-center gap-3 group" data-testid="logo-link">
-    <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Hexagon outline only - no fill, no P */}
+    <svg width="32" height="36" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M18 2L33.5885 10V26L18 34L2.41154 26V10L18 2Z"
-        stroke="#FF7A2A"
-        strokeWidth="2.5"
+        stroke="white"
+        strokeWidth="2"
         fill="none"
       />
-      <text x="11" y="24" fill="white" fontSize="16" fontWeight="700" fontFamily="Inter, sans-serif">P</text>
     </svg>
-    <span className="text-lg tracking-tight">
+    <span className="text-[15px] tracking-wide">
       <span className="font-semibold text-white">Project P</span>{" "}
-      <span className="font-light text-[#9FB0C8]">Innovations</span>
+      <span className="font-light text-[#9FB0C8] uppercase tracking-widest text-[11px]">Innovations</span>
     </span>
   </Link>
 );
@@ -45,7 +45,7 @@ export default function Header() {
   return (
     <header
       data-testid="main-header"
-      className={`fixed top-0 left-0 right-0 z-50 h-[72px] md:h-[72px] transition-colors duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-[72px] transition-colors duration-300 ${
         scrolled
           ? "bg-[#071020]/80 backdrop-blur-[14px] border-b border-white/[0.06]"
           : "bg-transparent border-b border-white/[0.03]"
@@ -60,7 +60,7 @@ export default function Header() {
             <Link
               key={link.path}
               to={link.path}
-              data-testid={`nav-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
+              data-testid={`nav-${link.name.toLowerCase().replace(/\s+/g, "-")}`}
               className={`text-sm tracking-wide transition-colors duration-200 hover:text-[#FF7A2A] ${
                 location.pathname === link.path
                   ? "text-[#FF7A2A] font-medium"
@@ -76,7 +76,7 @@ export default function Header() {
           <Link
             to="/admin/login"
             data-testid="admin-login-icon"
-            className="p-2 rounded-lg text-[#B9C7D6]/50 hover:text-[#B9C7D6] hover:bg-white/[0.04] transition-colors duration-200"
+            className="p-2 rounded-lg text-[#B9C7D6]/40 hover:text-[#B9C7D6] hover:bg-white/[0.04] transition-colors duration-200"
             title="Admin"
           >
             <Shield size={18} />
