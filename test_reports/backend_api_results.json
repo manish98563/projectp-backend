@@ -14,7 +14,7 @@
         "status": "ok"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.326061"
+      "timestamp": "2026-02-10T07:08:20.873015"
     },
     {
       "test": "Get All Jobs",
@@ -34,7 +34,7 @@
             "MLOps"
           ],
           "created_at": "2026-02-10T06:44:48.115624+00:00",
-          "updated_at": "2026-02-10T06:57:00.798043+00:00"
+          "updated_at": "2026-02-10T06:57:12.732875+00:00"
         },
         {
           "id": "c06d7a5d-6d1c-4732-aec3-4423cd8aeb11",
@@ -82,10 +82,40 @@
           ],
           "created_at": "2026-02-10T06:57:00.716358+00:00",
           "updated_at": "2026-02-10T06:57:00.716358+00:00"
+        },
+        {
+          "id": "21abb529-6cc8-43ea-b283-3e655038352d",
+          "slug": "test-engineer-position",
+          "title": "Test Engineer Position",
+          "location": "Remote",
+          "seniority": "Senior",
+          "description": "This is a test job posting created by automated tests",
+          "tags": [
+            "Testing",
+            "Automation",
+            "Python"
+          ],
+          "created_at": "2026-02-10T06:57:12.662993+00:00",
+          "updated_at": "2026-02-10T06:57:12.662993+00:00"
+        },
+        {
+          "id": "06c6f478-0bfd-4665-9e71-c6caccc616d9",
+          "slug": "test-frontend-job",
+          "title": "Test Frontend Job",
+          "location": "Remote",
+          "seniority": "Senior",
+          "description": "This is a test job created from frontend automation",
+          "tags": [
+            "Frontend",
+            "Testing",
+            "Automation"
+          ],
+          "created_at": "2026-02-10T06:58:56.851211+00:00",
+          "updated_at": "2026-02-10T06:58:56.851211+00:00"
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.367222"
+      "timestamp": "2026-02-10T07:08:20.912828"
     },
     {
       "test": "Get Single Job",
@@ -104,10 +134,10 @@
           "MLOps"
         ],
         "created_at": "2026-02-10T06:44:48.115624+00:00",
-        "updated_at": "2026-02-10T06:57:00.798043+00:00"
+        "updated_at": "2026-02-10T06:57:12.732875+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.447585"
+      "timestamp": "2026-02-10T07:08:20.994096"
     },
     {
       "test": "Admin Login Failure",
@@ -116,21 +146,41 @@
         "detail": "Invalid credentials"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.488529"
+      "timestamp": "2026-02-10T07:08:21.031816"
     },
     {
       "test": "Admin Login Success",
       "success": true,
       "response": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5MzAzMiwiaWF0IjoxNzcwNzA2NjMyfQ.I4HOMdDMJ5V-cCds4aCF5vILI5KRxcvx2e3f518hKOU"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5MzcwMSwiaWF0IjoxNzcwNzA3MzAxfQ.d7UTM8vdnNxqm_87WS7O1aZ8BR7PHQyWTWVvmTpb2tY"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.584644"
+      "timestamp": "2026-02-10T07:08:21.125574"
     },
     {
       "test": "Get Applications",
       "success": true,
       "response": [
+        {
+          "id": "8dcdbd3d-a738-4c3f-9be8-a2b1e8dc61b9",
+          "name": "Test User Frontend",
+          "email": "testuser@example.com",
+          "message": "This is a test message from frontend automation testing",
+          "job_id": "bcc178fc-faa8-4fa4-868a-1e74364ea136",
+          "job_title": "Updated Test Job Title",
+          "resume_path": "d1cf0de8-4b62-4dba-8956-406332e200d3.pdf",
+          "created_at": "2026-02-10T06:58:25.900052+00:00"
+        },
+        {
+          "id": "4fa4d2b1-1b01-4945-a992-2c4f06f9f195",
+          "name": "Test Applicant",
+          "email": "test@example.com",
+          "message": "This is a test application submission",
+          "job_id": null,
+          "job_title": null,
+          "resume_path": "2f3fd6a2-fb57-47a4-89cd-6b967fbd0b3e.pdf",
+          "created_at": "2026-02-10T06:57:12.842300+00:00"
+        },
         {
           "id": "bf03786c-ead8-42dd-ae4d-44b53dfbb757",
           "name": "Test Applicant",
@@ -143,13 +193,13 @@
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.626699"
+      "timestamp": "2026-02-10T07:08:21.166147"
     },
     {
       "test": "Create Job",
       "success": true,
       "response": {
-        "id": "21abb529-6cc8-43ea-b283-3e655038352d",
+        "id": "8fa7651a-d602-4b28-9572-fb21c76e021d",
         "slug": "test-engineer-position",
         "title": "Test Engineer Position",
         "location": "Remote",
@@ -160,11 +210,11 @@
           "Automation",
           "Python"
         ],
-        "created_at": "2026-02-10T06:57:12.662993+00:00",
-        "updated_at": "2026-02-10T06:57:12.662993+00:00"
+        "created_at": "2026-02-10T07:08:21.198922+00:00",
+        "updated_at": "2026-02-10T07:08:21.198922+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.666910"
+      "timestamp": "2026-02-10T07:08:21.202889"
     },
     {
       "test": "Update Job",
@@ -183,27 +233,27 @@
           "MLOps"
         ],
         "created_at": "2026-02-10T06:44:48.115624+00:00",
-        "updated_at": "2026-02-10T06:57:12.732875+00:00"
+        "updated_at": "2026-02-10T07:08:21.278631+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.737045"
+      "timestamp": "2026-02-10T07:08:21.283522"
     },
     {
       "test": "Delete Job",
       "success": true,
       "response": null,
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.808509"
+      "timestamp": "2026-02-10T07:08:21.356852"
     },
     {
       "test": "Apply with Valid File",
       "success": true,
       "response": {
         "message": "Application submitted successfully",
-        "id": "4fa4d2b1-1b01-4945-a992-2c4f06f9f195"
+        "id": "9fde381c-6fb4-4d53-b5d3-5f29e305db0b"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.847002"
+      "timestamp": "2026-02-10T07:08:21.398284"
     },
     {
       "test": "Apply with Invalid File",
@@ -212,7 +262,7 @@
         "detail": "Invalid file type. Allowed: .pdf, .doc, .docx"
       },
       "error": null,
-      "timestamp": "2026-02-10T06:57:12.886773"
+      "timestamp": "2026-02-10T07:08:21.435820"
     }
   ]
 }
