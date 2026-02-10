@@ -44,7 +44,8 @@ Build a complete production-ready website for Project P Innovations — an AI pr
 - [x] Glass-morphism design system
 - [x] Documentation (README, API_DOC, SECURITY, DEPLOYMENT_CHECKLIST, DELIVERY_SUMMARY)
 - [x] Scripts (setup_dev.sh, seed_db.sh, verify.sh, get_background.sh)
-- [x] Video-ready hero: drop mp4 to /frontend/public/videos/ai-background.mp4
+- [x] Canvas particle system (120+ particles: white/cyan/orange, glow, connecting lines, mouse interaction)
+- [x] Video-ready hero (drop mp4 to /frontend/public/videos/ai-background.mp4, auto-detects)
 
 ## Backlog
 - P0: None remaining
