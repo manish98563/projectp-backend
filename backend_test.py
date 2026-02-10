@@ -309,7 +309,7 @@ def main():
             },
             'failed_tests': tester.failed_tests,
             'detailed_results': tester.results
-        }, indent=2)
+        }, f, indent=2)
     
     return exit_code
 
