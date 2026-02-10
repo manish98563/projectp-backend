@@ -320,8 +320,7 @@ New application received:
 """
     email_log = {
         "id": str(uuid.uuid4()),
-        "to": "vishalpala@projectpinnovations.com",
-        "subject": subject,
+        "to": os.environ.get('EMAIL_TO', 'vishalpala@projectpinnovations.com'),  # Dynamic ✅"subject": subject,
         "body": email_body.strip(),
         "sent_at": datetime.now(timezone.utc).isoformat()
     }
