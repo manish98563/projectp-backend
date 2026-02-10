@@ -27,10 +27,8 @@ JWT_SECRET = os.environ.get('JWT_SECRET', 'projectp-secret-key-change-in-prod')
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
 
-# Email Configuration
-resend.api_key = os.environ.get('RESEND_API_KEY')
-EMAIL_FROM = os.environ.get('EMAIL_FROM', 'onboarding@resend.dev')
-EMAIL_TO = os.environ.get('EMAIL_TO', 'vishalpala@projectpinnovations.com')
+# Email Configuration (MOCKED - logs to DB)
+EMAIL_TO = 'vishalpala@projectpinnovations.com'
 
 # File Upload Configuration
 UPLOAD_DIR = ROOT_DIR / "uploads"
@@ -148,55 +146,22 @@ async def get_current_admin(request: Request):
     return admin
 
 async def send_email(to: str, subject: str, html_body: str) -> dict:
-    """Send email via Resend and log to database"""
-    try:
-        # Send email using Resend
-        params = {
-            "from": EMAIL_FROM,
-            "to": [to],
-            "subject": subject,
-            "html": html_body
-        }
-        resend_response = resend.Emails.send(params)
-        
-        # Log email to database
-        email_log = {
-            "id": str(uuid.uuid4()),
-            "to": to,
-            "subject": subject,
-            "body": html_body,
-            "sent_at": datetime.now(timezone.utc).isoformat(),
-            "resend_id": resend_response.get('id', ''),
-            "status": "sent"
-        }
-        await db.email_logs.insert_one(email_log)
-        logger.info(f"✅ Email sent via Resend to {to} | Subject: {subject}")
-        
-        return {
-            "success": True,
-            "email_log_id": email_log["id"],
-            "resend_id": resend_response.get('id', '')
-        }
-    except Exception as e:
-        logger.error(f"❌ Failed to send email: {str(e)}")
-        
-        # Log failed attempt
-        email_log = {
-            "id": str(uuid.uuid4()),
-            "to": to,
-            "subject": subject,
-            "body": html_body,
-            "sent_at": datetime.now(timezone.utc).isoformat(),
-            "status": "failed",
-            "error": str(e)
-        }
-        await db.email_logs.insert_one(email_log)
-        
-        return {
-            "success": False,
-            "error": str(e),
-            "email_log_id": email_log["id"]
-        }
+    """Mock email - log to console and store in DB"""
+    email_log = {
+        "id": str(uuid.uuid4()),
+        "to": to,
+        "subject": subject,
+        "body": html_body,
+        "sent_at": datetime.now(timezone.utc).isoformat(),
+        "status": "sent"
+    }
+    await db.email_logs.insert_one(email_log)
+    logger.info(f"[MOCK EMAIL] To: {to} | Subject: {subject}")
+    logger.info(f"[MOCK EMAIL] Body:\n{html_body}")
+    return {
+        "success": True,
+        "email_log_id": email_log["id"]
+    }
 
 # --- Rate Limiting ---
 
