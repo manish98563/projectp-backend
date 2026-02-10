@@ -160,7 +160,8 @@ class ProjectPAPITester:
             "tags": ["Testing", "Automation", "Python"]
         }
         
-        return self.run_test("Create Job", "POST", "admin/jobs", 201, data=job_data)
+        success, response = self.run_test("Create Job", "POST", "admin/jobs", 201, data=job_data)
+        return success
 
     def test_update_job(self):
         """Test updating a job (requires admin token)"""
