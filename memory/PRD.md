@@ -32,9 +32,11 @@ Build a complete production-ready website for Project P Innovations — an AI pr
 - [x] Footer with UK (+44 7717 206215) and India (+91 9000 242484) phone numbers
 - [x] Careers page (Job listings with search, location & seniority filters)
 - [x] Apply page (Form with name, email, message, job selection, resume upload)
-- [x] Admin Login (JWT authentication)
-- [x] Admin Dashboard (Jobs CRUD, applications viewer, email logs)
-- [x] Auto-seeding (admin user + 3 sample jobs)
+- [x] Admin Login (JWT authentication with error messages, centered glass card with logo)
+- [x] Admin Dashboard (sidebar navigation: Dashboard overview, Job Postings table, Applications, Email Logs)
+- [x] Admin Job CRUD (table with type badges, create/edit modal with type+seniority dropdowns, delete with confirmation)
+- [x] Protected routes (ProtectedRoute component, token expiry check, redirect to login)
+- [x] Auto-seeding (admin user + 6 sample jobs with type field)
 - [x] File upload validation (type + size)
 - [x] Rate limiting on /api/apply
 - [x] Responsive design (desktop/tablet/mobile)
