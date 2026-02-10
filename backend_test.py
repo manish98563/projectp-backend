@@ -114,7 +114,8 @@ class ProjectPAPITester:
                 jobs = response.json()
                 if jobs and len(jobs) > 0:
                     job_id = jobs[0]['id']
-                    return self.run_test("Get Single Job", "GET", f"jobs/{job_id}", 200)
+                    success, response_data = self.run_test("Get Single Job", "GET", f"jobs/{job_id}", 200)
+                    return success
             
             return self.log_result("Get Single Job", False, None, "No jobs available to test single job endpoint")
         except Exception as e:
