@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import ParticleBackground from "@/components/ParticleBackground";
 
 const fadeUp = {
   initial: { opacity: 0, y: 18 },
@@ -20,18 +21,17 @@ export default function HeroSection() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Check if video file exists
     const video = videoRef.current;
     if (video) {
-      video.addEventListener("canplaythrough", () => setVideoLoaded(true));
-      video.addEventListener("error", () => setVideoError(true));
+      const onCanPlay = () => setVideoLoaded(true);
+      const onError = () => setVideoError(true);
+      video.addEventListener("canplaythrough", onCanPlay);
+      video.addEventListener("error", onError);
+      return () => {
+        video.removeEventListener("canplaythrough", onCanPlay);
+        video.removeEventListener("error", onError);
+      };
     }
-    return () => {
-      if (video) {
-        video.removeEventListener("canplaythrough", () => setVideoLoaded(true));
-        video.removeEventListener("error", () => setVideoError(true));
-      }
-    };
   }, []);
 
   return (
@@ -39,9 +39,12 @@ export default function HeroSection() {
       data-testid="hero-section"
       className="relative min-h-[calc(100vh-72px)] flex items-center overflow-hidden"
     >
-      {/* === BACKGROUND LAYER === */}
+      {/* === BACKGROUND LAYERS === */}
       <div className="absolute inset-0 z-0">
-        {/* Video background (loads if mp4 exists, otherwise CSS fallback shows) */}
+        {/* Base gradient (always renders) */}
+        <div className="absolute inset-0 hero-gradient-bg" />
+
+        {/* Video background (loads if mp4 exists) */}
         {!videoError && (
           <video
             ref={videoRef}
@@ -53,55 +56,43 @@ export default function HeroSection() {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               videoLoaded ? "opacity-100" : "opacity-0"
             }`}
+            style={{ zIndex: 1 }}
           >
             <source src="/videos/ai-background.mp4" type="video/mp4" />
           </video>
         )}
 
-        {/* CSS Animated Gradient Fallback (always renders behind video) */}
-        <div
-          className={`absolute inset-0 hero-gradient-bg ${
-            videoLoaded ? "opacity-0" : "opacity-100"
-          } transition-opacity duration-1000`}
-        />
-
-        {/* Particle overlay */}
-        <div className="absolute inset-0 hero-particles pointer-events-none" />
-
-        {/* Floating orbs */}
-        {!prefersReduced && (
-          <>
-            <div className="absolute top-[20%] left-[15%] w-[300px] h-[300px] bg-cyan-500/[0.03] rounded-full blur-[80px] animate-float-slow pointer-events-none" />
-            <div className="absolute bottom-[25%] right-[20%] w-[250px] h-[250px] bg-[#FF7A2A]/[0.04] rounded-full blur-[100px] animate-float-slower pointer-events-none" />
-            <div className="absolute top-[50%] right-[40%] w-[200px] h-[200px] bg-blue-500/[0.03] rounded-full blur-[60px] animate-float-reverse pointer-events-none" />
-          </>
-        )}
-
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-[#071020]/40" />
+        {/* Canvas particle system — renders OVER gradient, UNDER content */}
+        {!videoLoaded && <ParticleBackground />}
 
         {/* Grid overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
+              linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
             `,
             backgroundSize: "50px 50px",
+            zIndex: 2,
           }}
         />
 
-        {/* Vignette edges */}
-        <div className="absolute inset-0 pointer-events-none"
+        {/* Vignette */}
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(ellipse at center, transparent 50%, #071020 100%)`,
+            background: "radial-gradient(ellipse at center, transparent 40%, #071020 100%)",
+            zIndex: 3,
           }}
         />
+
+        {/* Subtle overlay for text readability */}
+        <div className="absolute inset-0 bg-[#071020]/20 pointer-events-none" style={{ zIndex: 4 }} />
       </div>
 
       {/* === CONTENT === */}
-      <div className="max-w-[1180px] mx-auto px-7 py-20 md:py-0 w-full relative z-10">
+      <div className="max-w-[1180px] mx-auto px-7 py-20 md:py-0 w-full relative" style={{ zIndex: 10 }}>
         <motion.div
           className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0"
           variants={staggerContainer}
