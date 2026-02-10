@@ -14,29 +14,12 @@
         "status": "ok"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.447039"
+      "timestamp": "2026-02-10T07:31:41.448212"
     },
     {
       "test": "Get All Jobs",
       "success": true,
       "response": [
-        {
-          "id": "8a0b6b45-d219-405d-a3f4-74362de3ec71",
-          "slug": "senior-ai-engineer",
-          "title": "Senior AI Engineer",
-          "location": "Remote / London",
-          "type": "Full-time",
-          "seniority": "Senior",
-          "description": "Lead the development of cutting-edge AI solutions for enterprise clients. You'll work with large language models, computer vision systems, and reinforcement learning frameworks to build products that shape the future of technology.",
-          "tags": [
-            "Python",
-            "PyTorch",
-            "LLMs",
-            "MLOps"
-          ],
-          "created_at": "2026-02-10T07:14:56.096903+00:00",
-          "updated_at": "2026-02-10T07:14:56.096912+00:00"
-        },
         {
           "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
           "slug": "product-designer-ai",
@@ -125,30 +108,30 @@
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.484287"
+      "timestamp": "2026-02-10T07:31:41.487300"
     },
     {
       "test": "Get Single Job",
       "success": true,
       "response": {
-        "id": "8a0b6b45-d219-405d-a3f4-74362de3ec71",
-        "slug": "senior-ai-engineer",
-        "title": "Senior AI Engineer",
-        "location": "Remote / London",
+        "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
+        "slug": "product-designer-ai",
+        "title": "Product Designer \u2014 AI Products",
+        "location": "New York, NY",
         "type": "Full-time",
-        "seniority": "Senior",
-        "description": "Lead the development of cutting-edge AI solutions for enterprise clients. You'll work with large language models, computer vision systems, and reinforcement learning frameworks to build products that shape the future of technology.",
+        "seniority": "Mid-Level",
+        "description": "Design intuitive interfaces for complex AI-powered products. Collaborate with engineers and product managers to create seamless user experiences that make AI accessible and delightful.",
         "tags": [
-          "Python",
-          "PyTorch",
-          "LLMs",
-          "MLOps"
+          "Figma",
+          "UX Research",
+          "Design Systems",
+          "Prototyping"
         ],
-        "created_at": "2026-02-10T07:14:56.096903+00:00",
-        "updated_at": "2026-02-10T07:14:56.096912+00:00"
+        "created_at": "2026-02-10T07:14:56.096919+00:00",
+        "updated_at": "2026-02-10T07:14:56.096920+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.601321"
+      "timestamp": "2026-02-10T07:31:41.565749"
     },
     {
       "test": "Admin Login Failure",
@@ -157,26 +140,36 @@
         "detail": "Invalid credentials"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.641942"
+      "timestamp": "2026-02-10T07:31:41.604872"
     },
     {
       "test": "Admin Login Success",
       "success": true,
       "response": {
         "success": true,
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5NDM1OSwiaWF0IjoxNzcwNzA3OTU5fQ.NTUWv93AAR3VSZiOHVSYb9Eew6SF2Rs7JVouzvZN0I8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5NTEwMSwiaWF0IjoxNzcwNzA4NzAxfQ._7fkZsEnRanvp9FWhCzGgZwpY6_V6qjd2dy-ayEN668",
         "admin": {
           "id": "84cb1403-e19e-4d6a-90e9-50f21344b4fe",
           "email": "admin@projectpinnovations.com"
         }
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.737694"
+      "timestamp": "2026-02-10T07:31:41.701266"
     },
     {
       "test": "Get Applications",
       "success": true,
       "response": [
+        {
+          "id": "983627e4-696f-439d-9acd-76691f95b6b9",
+          "name": "Test Applicant",
+          "email": "test@example.com",
+          "message": "This is a test application submission",
+          "job_id": null,
+          "job_title": null,
+          "resume_path": "9e1849da-22ac-42e6-932d-174c1ac37cea.pdf",
+          "created_at": "2026-02-10T07:19:20.005010+00:00"
+        },
         {
           "id": "5dea9d70-eb13-46b4-acad-dedf23dd06aa",
           "name": "Frontend Test User",
@@ -229,13 +222,13 @@
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.777985"
+      "timestamp": "2026-02-10T07:31:41.743037"
     },
     {
       "test": "Create Job",
       "success": true,
       "response": {
-        "id": "15f947a7-58f4-406d-bb19-b4aa1f9b8868",
+        "id": "3404c31c-1b6d-457e-97d1-f6274790526a",
         "slug": "test-engineer-position",
         "title": "Test Engineer Position",
         "location": "Remote",
@@ -247,51 +240,51 @@
           "Automation",
           "Python"
         ],
-        "created_at": "2026-02-10T07:19:19.815117+00:00",
-        "updated_at": "2026-02-10T07:19:19.815117+00:00"
+        "created_at": "2026-02-10T07:31:41.777261+00:00",
+        "updated_at": "2026-02-10T07:31:41.777261+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.819600"
+      "timestamp": "2026-02-10T07:31:41.782065"
     },
     {
       "test": "Update Job",
       "success": true,
       "response": {
-        "id": "8a0b6b45-d219-405d-a3f4-74362de3ec71",
+        "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
         "slug": "updated-test-job-title",
         "title": "Updated Test Job Title",
-        "location": "Remote / London",
+        "location": "New York, NY",
         "type": "Full-time",
-        "seniority": "Senior",
+        "seniority": "Mid-Level",
         "description": "This job description was updated by automated tests",
         "tags": [
-          "Python",
-          "PyTorch",
-          "LLMs",
-          "MLOps"
+          "Figma",
+          "UX Research",
+          "Design Systems",
+          "Prototyping"
         ],
-        "created_at": "2026-02-10T07:14:56.096903+00:00",
-        "updated_at": "2026-02-10T07:19:19.891754+00:00"
+        "created_at": "2026-02-10T07:14:56.096919+00:00",
+        "updated_at": "2026-02-10T07:31:41.854929+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.896475"
+      "timestamp": "2026-02-10T07:31:41.859800"
     },
     {
       "test": "Delete Job",
       "success": true,
       "response": null,
       "error": null,
-      "timestamp": "2026-02-10T07:19:19.971263"
+      "timestamp": "2026-02-10T07:31:41.939455"
     },
     {
       "test": "Apply with Valid File",
       "success": true,
       "response": {
         "message": "Application submitted successfully",
-        "id": "983627e4-696f-439d-9acd-76691f95b6b9"
+        "id": "79523f53-0e05-4985-addc-6c1284901493"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:20.009694"
+      "timestamp": "2026-02-10T07:31:41.978545"
     },
     {
       "test": "Apply with Invalid File",
@@ -300,7 +293,7 @@
         "detail": "Invalid file type. Allowed: .pdf, .doc, .docx"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:19:20.049246"
+      "timestamp": "2026-02-10T07:31:42.020663"
     }
   ]
 }
