@@ -138,13 +138,14 @@ class ProjectPAPITester:
 
     def test_admin_login_failure(self):
         """Test admin login with wrong credentials"""
-        return self.run_test(
+        success, response = self.run_test(
             "Admin Login Failure",
             "POST", 
             "admin/login",
             401,
             data={"email": "wrong@email.com", "password": "wrongpass"}
         )
+        return success
 
     def test_create_job(self):
         """Test creating a new job (requires admin token)"""
