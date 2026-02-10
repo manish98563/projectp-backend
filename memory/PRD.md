@@ -24,7 +24,12 @@ Build a complete production-ready website for Project P Innovations — an AI pr
 - Mock email system (logged + stored in DB)
 
 ## What's Been Implemented (Feb 10, 2026)
-- [x] Home page (Hero + Services + About Preview)
+- [x] Home page (Hero + Scrolling Ticker + Services + About Preview)
+- [x] Animated hero with CSS gradient + particles + floating orbs + vignette (video-ready)
+- [x] Scrolling ticker with 7 service items + orange dot separators
+- [x] 3 service cards: AI Products, AI Solutions & Automation, Talent & Hiring Consultancy
+- [x] White hexagon outline logo (no fill, no P inside) + "Project P INNOVATIONS"
+- [x] Footer with UK (+44 7717 206215) and India (+91 9000 242484) phone numbers
 - [x] Careers page (Job listings with search, location & seniority filters)
 - [x] Apply page (Form with name, email, message, job selection, resume upload)
 - [x] Admin Login (JWT authentication)
@@ -33,10 +38,11 @@ Build a complete production-ready website for Project P Innovations — an AI pr
 - [x] File upload validation (type + size)
 - [x] Rate limiting on /api/apply
 - [x] Responsive design (desktop/tablet/mobile)
-- [x] Framer Motion animations
+- [x] Framer Motion animations + prefers-reduced-motion support
 - [x] Glass-morphism design system
 - [x] Documentation (README, API_DOC, SECURITY, DEPLOYMENT_CHECKLIST, DELIVERY_SUMMARY)
-- [x] Verification scripts
+- [x] Scripts (setup_dev.sh, seed_db.sh, verify.sh, get_background.sh)
+- [x] Video-ready hero: drop mp4 to /frontend/public/videos/ai-background.mp4
 
 ## Backlog
 - P0: None remaining
