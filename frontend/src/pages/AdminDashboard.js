@@ -19,12 +19,15 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+
 const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || ''}/api`;
+
 
 function getAuthHeaders() {
   const token = localStorage.getItem("admin_token");
   return { Authorization: `Bearer ${token}` };
 }
+
 
 // ============ JOB FORM MODAL ============
 function JobFormModal({ job, onClose, onSaved }) {
@@ -38,6 +41,7 @@ function JobFormModal({ job, onClose, onSaved }) {
     tags: job?.tags?.join(", ") || "",
   });
   const [saving, setSaving] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,6 +74,7 @@ function JobFormModal({ job, onClose, onSaved }) {
     }
   };
 
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4" onClick={onClose}>
       <motion.div
@@ -89,6 +94,7 @@ function JobFormModal({ job, onClose, onSaved }) {
           </button>
         </div>
 
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="text-xs text-[#9FB0C8] uppercase tracking-wider mb-1.5 block">Job Title *</label>
@@ -101,6 +107,7 @@ function JobFormModal({ job, onClose, onSaved }) {
               required
             />
           </div>
+
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -132,6 +139,7 @@ function JobFormModal({ job, onClose, onSaved }) {
             </div>
           </div>
 
+
           <div>
             <label className="text-xs text-[#9FB0C8] uppercase tracking-wider mb-1.5 block">Seniority *</label>
             <select
@@ -150,6 +158,7 @@ function JobFormModal({ job, onClose, onSaved }) {
             </select>
           </div>
 
+
           <div>
             <label className="text-xs text-[#9FB0C8] uppercase tracking-wider mb-1.5 block">Job Description *</label>
             <textarea
@@ -163,6 +172,7 @@ function JobFormModal({ job, onClose, onSaved }) {
             />
           </div>
 
+
           <div>
             <label className="text-xs text-[#9FB0C8] uppercase tracking-wider mb-1.5 block">Tags (comma-separated)</label>
             <input
@@ -174,6 +184,7 @@ function JobFormModal({ job, onClose, onSaved }) {
             />
             <p className="text-[10px] text-[#9FB0C8]/50 mt-1">Separate tags with commas</p>
           </div>
+
 
           <div className="flex items-center gap-3 pt-2">
             <button
@@ -198,10 +209,12 @@ function JobFormModal({ job, onClose, onSaved }) {
   );
 }
 
+
 // ============ SIDEBAR ============
 function AdminSidebar({ activeSection, onNavigate }) {
   const navigate = useNavigate();
   const adminEmail = localStorage.getItem("admin_email") || "Admin";
+
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -209,12 +222,14 @@ function AdminSidebar({ activeSection, onNavigate }) {
     navigate("/admin/login");
   };
 
+
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "jobs", label: "Job Postings", icon: Briefcase },
     { id: "applications", label: "Applications", icon: FileText },
     { id: "emails", label: "Email Logs", icon: Mail },
   ];
+
 
   return (
     <aside
@@ -233,6 +248,7 @@ function AdminSidebar({ activeSection, onNavigate }) {
           </span>
         </Link>
       </div>
+
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
@@ -253,6 +269,7 @@ function AdminSidebar({ activeSection, onNavigate }) {
         ))}
       </nav>
 
+
       {/* User & logout */}
       <div className="px-4 py-4 border-t border-white/[0.04]">
         <p className="text-xs text-[#9FB0C8]/60 truncate mb-3 px-2">{adminEmail}</p>
@@ -269,6 +286,7 @@ function AdminSidebar({ activeSection, onNavigate }) {
   );
 }
 
+
 // ============ DASHBOARD OVERVIEW ============
 function DashboardOverview({ jobs, applications, emailLogs }) {
   const stats = [
@@ -276,6 +294,7 @@ function DashboardOverview({ jobs, applications, emailLogs }) {
     { label: "Applications", value: applications.length, icon: Users, color: "#3B82F6" },
     { label: "Emails Sent", value: emailLogs.length, icon: Mail, color: "#10B981" },
   ];
+
 
   return (
     <div>
@@ -294,6 +313,7 @@ function DashboardOverview({ jobs, applications, emailLogs }) {
           </div>
         ))}
       </div>
+
 
       {/* Recent applications */}
       <div className="glass-card p-6">
@@ -318,6 +338,7 @@ function DashboardOverview({ jobs, applications, emailLogs }) {
   );
 }
 
+
 // ============ JOBS TABLE ============
 function JobsTable({ jobs, onEdit, onDelete, onAdd }) {
   return (
@@ -333,6 +354,7 @@ function JobsTable({ jobs, onEdit, onDelete, onAdd }) {
           Create New Job
         </button>
       </div>
+
 
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
@@ -422,8 +444,40 @@ function JobsTable({ jobs, onEdit, onDelete, onAdd }) {
   );
 }
 
+
 // ============ APPLICATIONS LIST ============
 function ApplicationsList({ applications }) {
+  const handleDownloadResume = (app) => {
+    // Validate token
+    const token = localStorage.getItem("admin_token");
+    if (!token) {
+      toast.error("Authentication token missing. Please log in again.");
+      return;
+    }
+    
+    // Validate resume path
+    if (!app.resume_path) {
+      toast.error("Resume file not available.");
+      return;
+    }
+    
+    // Encode resume path to handle special characters and spaces
+    const encodedPath = encodeURIComponent(app.resume_path);
+    const url = `${API}/admin/download-resume/${encodedPath}?token=${token}`;
+    
+    // Debug logging
+    console.log('🔍 Download Debug Info:');
+    console.log('  → API constant:', API);
+    console.log('  → Token exists:', !!token);
+    console.log('  → Token length:', token ? token.length : 0);
+    console.log('  → Resume path:', app.resume_path);
+    console.log('  → Encoded path:', encodedPath);
+    console.log('  → Full URL:', url);
+    
+    // Open download in new tab
+    window.open(url, "_blank");
+  };
+
   return (
     <div>
       <h2 className="text-lg font-semibold text-white mb-6">Applications</h2>
@@ -447,10 +501,7 @@ function ApplicationsList({ applications }) {
               </div>
               <div className="flex items-center gap-2 shrink-0 ml-4">
                 <button
-                  onClick={() => {
-                    const token = localStorage.getItem("admin_token");
-                    window.open(`${API}/admin/download-resume/${app.resume_path}?token=${token}`, "_blank");
-                  }}
+                  onClick={() => handleDownloadResume(app)}
                   data-testid={`download-resume-${app.id}`}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#FF7A2A] bg-[#FF7A2A]/10 rounded-lg hover:bg-[#FF7A2A]/20 transition-colors duration-200"
                 >
@@ -473,6 +524,7 @@ function ApplicationsList({ applications }) {
     </div>
   );
 }
+
 
 // ============ EMAIL LOGS ============
 function EmailLogsList({ emailLogs }) {
@@ -506,6 +558,7 @@ function EmailLogsList({ emailLogs }) {
   );
 }
 
+
 // ============ MAIN DASHBOARD ============
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -516,6 +569,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [showJobModal, setShowJobModal] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
+
 
   const fetchData = useCallback(async () => {
     try {
@@ -540,6 +594,7 @@ export default function AdminDashboard() {
     }
   }, [navigate]);
 
+
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
     if (!token) {
@@ -548,6 +603,7 @@ export default function AdminDashboard() {
     }
     fetchData();
   }, [navigate, fetchData]);
+
 
   const deleteJob = async (id) => {
     if (!window.confirm("Are you sure you want to delete this job posting?")) return;
@@ -560,6 +616,7 @@ export default function AdminDashboard() {
     }
   };
 
+
   const sectionTitles = {
     dashboard: "Dashboard",
     jobs: "Job Postings",
@@ -567,9 +624,11 @@ export default function AdminDashboard() {
     emails: "Email Logs",
   };
 
+
   return (
     <main data-testid="admin-dashboard" className="min-h-screen bg-[#071020]">
       <AdminSidebar activeSection={section} onNavigate={setSection} />
+
 
       {/* Main content area */}
       <div className="ml-[280px] min-h-screen">
@@ -581,6 +640,7 @@ export default function AdminDashboard() {
             <span className="text-white font-medium">{sectionTitles[section]}</span>
           </div>
         </header>
+
 
         {/* Content */}
         <div className="p-8 lg:p-10">
@@ -611,6 +671,7 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
 
       {/* Job modal */}
       <AnimatePresence>
