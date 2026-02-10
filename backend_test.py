@@ -71,13 +71,16 @@ class ProjectPAPITester:
                 response_data = {"raw_response": response.text}
 
             if success:
-                return self.log_result(name, True, response_data)
+                self.log_result(name, True, response_data)
+                return success, response_data
             else:
                 error = f"Expected {expected_status}, got {response.status_code}. Response: {response.text[:200]}"
-                return self.log_result(name, False, response_data, error)
+                self.log_result(name, False, response_data, error)
+                return success, response_data
 
         except Exception as e:
-            return self.log_result(name, False, None, str(e))
+            self.log_result(name, False, None, str(e))
+            return False, None
 
     def test_health_check(self):
         """Test health endpoint"""
