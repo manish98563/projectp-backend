@@ -218,7 +218,7 @@ export default function Careers() {
                           <MapPin size={12} /> {job.location}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Briefcase size={12} /> {job.seniority}
+                          <Briefcase size={12} /> {job.type || "Full-time"}
                         </span>
                       </div>
 
