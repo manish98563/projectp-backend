@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+import resend
 import os
 import logging
 import uuid
@@ -22,13 +23,19 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# JWT Configuration
 JWT_SECRET = os.environ.get('JWT_SECRET', 'projectp-secret-key-change-in-prod')
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
 
+# Email Configuration
+resend.api_key = os.environ.get('RESEND_API_KEY')
+EMAIL_FROM = os.environ.get('EMAIL_FROM', 'onboarding@resend.dev')
+EMAIL_TO = os.environ.get('EMAIL_TO', 'vishalpala@projectpinnovations.com')
+
+# File Upload Configuration
 UPLOAD_DIR = ROOT_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
-
 ALLOWED_EXTENSIONS = {".pdf", ".doc", ".docx"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 
@@ -103,12 +110,14 @@ class EmailLog(BaseModel):
 # --- Helper Functions ---
 
 def slugify(text: str) -> str:
+    """Convert text to URL-friendly slug"""
     text = text.lower().strip()
     text = re.sub(r'[^\w\s-]', '', text)
     text = re.sub(r'[-\s]+', '-', text)
     return text
 
 def create_jwt_token(email: str) -> str:
+    """Create JWT token for admin authentication"""
     payload = {
         "sub": email,
         "exp": datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRATION_HOURS),
@@ -117,6 +126,7 @@ def create_jwt_token(email: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 def verify_jwt_token(token: str) -> dict:
+    """Verify and decode JWT token"""
     try:
         return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
     except jwt.ExpiredSignatureError:
@@ -125,30 +135,94 @@ def verify_jwt_token(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 async def get_current_admin(request: Request):
+    """Dependency to get current authenticated admin"""
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
+    
     token = auth_header.split(" ")[1]
     payload = verify_jwt_token(token)
     admin = await db.admins.find_one({"email": payload["sub"]}, {"_id": 0})
+    
     if not admin:
         raise HTTPException(status_code=401, detail="Admin not found")
     return admin
 
-# --- Rate Limiting (simple in-memory) ---
+async def send_email(to: str, subject: str, html_body: str) -> dict:
+    """Send email via Resend and log to database"""
+    try:
+        # Send email using Resend
+        params = {
+            "from": EMAIL_FROM,
+            "to": [to],
+            "subject": subject,
+            "html": html_body
+        }
+        resend_response = resend.Emails.send(params)
+        
+        # Log email to database
+        email_log = {
+            "id": str(uuid.uuid4()),
+            "to": to,
+            "subject": subject,
+            "body": html_body,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "resend_id": resend_response.get('id', ''),
+            "status": "sent"
+        }
+        await db.email_logs.insert_one(email_log)
+        logger.info(f"✅ Email sent via Resend to {to} | Subject: {subject}")
+        
+        return {
+            "success": True,
+            "email_log_id": email_log["id"],
+            "resend_id": resend_response.get('id', '')
+        }
+    except Exception as e:
+        logger.error(f"❌ Failed to send email: {str(e)}")
+        
+        # Log failed attempt
+        email_log = {
+            "id": str(uuid.uuid4()),
+            "to": to,
+            "subject": subject,
+            "body": html_body,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "status": "failed",
+            "error": str(e)
+        }
+        await db.email_logs.insert_one(email_log)
+        
+        return {
+            "success": False,
+            "error": str(e),
+            "email_log_id": email_log["id"]
+        }
+
+# --- Rate Limiting ---
+
 rate_limit_store = {}
 
 def check_rate_limit(ip: str, limit: int = 10, window: int = 3600):
+    """Simple in-memory rate limiting"""
     now = datetime.now(timezone.utc).timestamp()
+    
     if ip not in rate_limit_store:
         rate_limit_store[ip] = []
+    
+    # Remove expired timestamps
     rate_limit_store[ip] = [t for t in rate_limit_store[ip] if now - t < window]
+    
     if len(rate_limit_store[ip]) >= limit:
         raise HTTPException(status_code=429, detail="Too many requests. Please try again later.")
+    
     rate_limit_store[ip].append(now)
 
-# --- Seed Data ---
+# --- Database Seeding ---
+
 async def seed_database():
+    """Seed database with initial admin user and sample jobs"""
+    # Create admin user
     admin_count = await db.admins.count_documents({})
     if admin_count == 0:
         hashed = bcrypt.hashpw("ChangeMe123!".encode('utf-8'), bcrypt.gensalt(rounds=10))
@@ -158,8 +232,9 @@ async def seed_database():
             "password": hashed.decode('utf-8'),
             "created_at": datetime.now(timezone.utc).isoformat()
         })
-        logger.info("Admin user seeded")
+        logger.info("✅ Admin user seeded")
 
+    # Create sample jobs
     jobs_count = await db.jobs.count_documents({})
     if jobs_count == 0:
         sample_jobs = [
@@ -237,21 +312,24 @@ async def seed_database():
             }
         ]
         await db.jobs.insert_many(sample_jobs)
-        logger.info("Sample jobs seeded")
+        logger.info("✅ Sample jobs seeded")
 
 # --- Public Routes ---
 
 @api_router.get("/health", response_model=HealthResponse)
 async def health_check():
+    """Health check endpoint"""
     return {"status": "ok"}
 
 @api_router.get("/jobs", response_model=List[JobResponse])
 async def get_jobs():
+    """Get all job listings"""
     jobs = await db.jobs.find({}, {"_id": 0}).to_list(100)
     return jobs
 
 @api_router.get("/jobs/{job_id}", response_model=JobResponse)
 async def get_job(job_id: str):
+    """Get a specific job by ID or slug"""
     job = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if not job:
         job = await db.jobs.find_one({"slug": job_id}, {"_id": 0})
@@ -268,13 +346,17 @@ async def submit_application(
     job_id: str = Form(None),
     resume: UploadFile = File(...)
 ):
+    """Submit a job application"""
     client_ip = request.client.host
     check_rate_limit(client_ip)
 
     # Validate file extension
     ext = Path(resume.filename).suffix.lower()
     if ext not in ALLOWED_EXTENSIONS:
-        raise HTTPException(status_code=400, detail=f"Invalid file type. Allowed: {', '.join(ALLOWED_EXTENSIONS)}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file type. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"
+        )
 
     # Read and validate file size
     content = await resume.read()
@@ -295,7 +377,7 @@ async def submit_application(
         if job:
             job_title = job.get("title")
 
-    # Create application
+    # Create application record
     application = {
         "id": str(uuid.uuid4()),
         "name": name,
@@ -308,50 +390,58 @@ async def submit_application(
     }
     await db.applications.insert_one(application)
 
-    # Mock email - log and store
+    # Send notification email
     subject = f"New Application: {name} — {job_title or 'General'}"
-    email_body = f"""
-New application received:
-- Name: {name}
-- Email: {email}
-- Position: {job_title or 'General Application'}
-- Message: {message or 'N/A'}
-- Resume: {filename}
-"""
-    email_log = {
-        "id": str(uuid.uuid4()),
-        "to": os.environ.get('EMAIL_TO', 'vishalpala@projectpinnovations.com'),  # Dynamic ✅"subject": subject,
-        "body": email_body.strip(),
-        "sent_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.email_logs.insert_one(email_log)
-    logger.info(f"[MOCK EMAIL] To: vishalpala@projectpinnovations.com | Subject: {subject}")
-    logger.info(f"[MOCK EMAIL] Body:\n{email_body}")
+    html_body = f"""
+    <h2>New Job Application Received</h2>
+    <p><strong>Name:</strong> {name}</p>
+    <p><strong>Email:</strong> {email}</p>
+    <p><strong>Position:</strong> {job_title or 'General Application'}</p>
+    <p><strong>Message:</strong> {message or 'N/A'}</p>
+    <p><strong>Resume:</strong> {filename}</p>
+    <p><em>Check the admin dashboard to download the resume and review the application.</em></p>
+    """
+    
+    await send_email(EMAIL_TO, subject, html_body)
 
     return {"message": "Application submitted successfully", "id": application["id"]}
 
 @api_router.get("/test-email")
 async def test_email():
-    email_log = {
-        "id": str(uuid.uuid4()),
-        "to": "vishalpala@projectpinnovations.com",
-        "subject": "Test Email from Project P Innovations",
-        "body": "This is a test email to verify the email system is working.",
-        "sent_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.email_logs.insert_one(email_log)
-    logger.info("[MOCK EMAIL] Test email sent successfully")
-    return {"message": "Test email sent (mocked)", "email_log_id": email_log["id"]}
+    """Test email endpoint"""
+    subject = "Test Email from Project P Innovations"
+    html_body = """
+    <h2>Test Email</h2>
+    <p>This is a test email to verify the email system is working correctly.</p>
+    <p>If you're seeing this, your Resend integration is configured properly! ✅</p>
+    """
+    
+    result = await send_email(EMAIL_TO, subject, html_body)
+    
+    if result["success"]:
+        return {
+            "message": "Test email sent successfully via Resend",
+            "email_log_id": result["email_log_id"],
+            "resend_id": result.get("resend_id", "")
+        }
+    else:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to send email: {result.get('error', 'Unknown error')}"
+        )
 
 # --- Admin Routes ---
 
 @api_router.post("/admin/login", response_model=TokenResponse)
 async def admin_login(creds: AdminLogin):
+    """Admin login endpoint"""
     admin = await db.admins.find_one({"email": creds.email}, {"_id": 0})
     if not admin:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    
     if not bcrypt.checkpw(creds.password.encode('utf-8'), admin["password"].encode('utf-8')):
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    
     token = create_jwt_token(admin["email"])
     return {
         "success": True,
@@ -361,16 +451,19 @@ async def admin_login(creds: AdminLogin):
 
 @api_router.get("/admin/applications", response_model=List[ApplicationResponse])
 async def get_applications(admin=Depends(get_current_admin)):
+    """Get all job applications (admin only)"""
     applications = await db.applications.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
     return applications
 
 @api_router.get("/admin/email-logs", response_model=List[EmailLog])
 async def get_email_logs(admin=Depends(get_current_admin)):
+    """Get all email logs (admin only)"""
     logs = await db.email_logs.find({}, {"_id": 0}).sort("sent_at", -1).to_list(100)
     return logs
 
 @api_router.post("/admin/jobs", response_model=JobResponse, status_code=201)
 async def create_job(job_data: JobCreate, admin=Depends(get_current_admin)):
+    """Create a new job posting (admin only)"""
     now = datetime.now(timezone.utc).isoformat()
     job = {
         "id": str(uuid.uuid4()),
@@ -390,19 +483,23 @@ async def create_job(job_data: JobCreate, admin=Depends(get_current_admin)):
 
 @api_router.put("/admin/jobs/{job_id}", response_model=JobResponse)
 async def update_job(job_id: str, job_data: JobUpdate, admin=Depends(get_current_admin)):
+    """Update an existing job posting (admin only)"""
     existing = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Job not found")
+    
     update_fields = {k: v for k, v in job_data.model_dump().items() if v is not None}
     if "title" in update_fields:
         update_fields["slug"] = slugify(update_fields["title"])
     update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
     await db.jobs.update_one({"id": job_id}, {"$set": update_fields})
     updated = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     return updated
 
 @api_router.delete("/admin/jobs/{job_id}", status_code=204)
 async def delete_job(job_id: str, admin=Depends(get_current_admin)):
+    """Delete a job posting (admin only)"""
     result = await db.jobs.delete_one({"id": job_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Job not found")
@@ -410,12 +507,14 @@ async def delete_job(job_id: str, admin=Depends(get_current_admin)):
 
 @api_router.get("/admin/download-resume/{filename}")
 async def download_resume(filename: str, admin=Depends(get_current_admin)):
+    """Download a resume file (admin only)"""
     filepath = UPLOAD_DIR / filename
     if not filepath.exists():
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(filepath, filename=filename)
 
-# Include router and middleware
+# --- App Configuration ---
+
 app.include_router(api_router)
 
 app.add_middleware(
@@ -428,9 +527,12 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
+    """Run on application startup"""
     await seed_database()
-    logger.info("Project P Innovations API started")
+    logger.info("🚀 Project P Innovations API started")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    """Run on application shutdown"""
     client.close()
+    logger.info("👋 MongoDB connection closed")
