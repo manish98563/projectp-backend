@@ -506,12 +506,48 @@ async def delete_job(job_id: str, admin=Depends(get_current_admin)):
     return None
 
 @api_router.get("/admin/download-resume/{filename}")
-async def download_resume(filename: str, admin=Depends(get_current_admin)):
-    """Download a resume file (admin only)"""
+async def download_resume(
+    filename: str,
+    token: Optional[str] = None,
+    request: Request = None
+):
+    """Download a resume file (admin only) - supports token in query param or header"""
+    # Get token from query param or header
+    auth_token = token
+    if not auth_token:
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            auth_token = auth_header.split(" ")[1]
+    
+    if not auth_token:
+        raise HTTPException(status_code=401, detail="Missing authentication token")
+    
+    # Verify token
+    try:
+        payload = verify_jwt_token(auth_token)
+        admin = await db.admins.find_one({"email": payload["sub"]}, {"_id": 0})
+        if not admin:
+            raise HTTPException(status_code=401, detail="Admin not found")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=401, detail="Invalid authentication token")
+    
+    # Check if file exists
     filepath = UPLOAD_DIR / filename
     if not filepath.exists():
         raise HTTPException(status_code=404, detail="File not found")
-    return FileResponse(filepath, filename=filename)
+    
+    # Return file with proper headers
+    return FileResponse(
+        filepath,
+        filename=filename,
+        media_type='application/octet-stream',
+        headers={
+            "Access-Control-Expose-Headers": "Content-Disposition",
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
 
 # --- App Configuration ---
 
