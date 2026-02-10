@@ -14,14 +14,31 @@
         "status": "ok"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.448212"
+      "timestamp": "2026-02-10T07:39:04.811393"
     },
     {
       "test": "Get All Jobs",
       "success": true,
       "response": [
         {
-          "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
+          "id": "8526b274-aab3-4da1-9a48-5a3b0884fad2",
+          "slug": "senior-ai-engineer",
+          "title": "Senior AI Engineer",
+          "location": "Remote / London",
+          "type": "Full-time",
+          "seniority": "Senior",
+          "description": "Lead the development of cutting-edge AI solutions for enterprise clients. You'll work with large language models, computer vision systems, and reinforcement learning frameworks to build products that shape the future of technology.",
+          "tags": [
+            "Python",
+            "PyTorch",
+            "LLMs",
+            "MLOps"
+          ],
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
+        },
+        {
+          "id": "08c6f0ff-425d-484d-a81e-2d6eb39c6d6a",
           "slug": "product-designer-ai",
           "title": "Product Designer \u2014 AI Products",
           "location": "New York, NY",
@@ -34,11 +51,11 @@
             "Design Systems",
             "Prototyping"
           ],
-          "created_at": "2026-02-10T07:14:56.096919+00:00",
-          "updated_at": "2026-02-10T07:14:56.096920+00:00"
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
         },
         {
-          "id": "d035ef5d-4d02-4a3c-893f-4a338ebb5857",
+          "id": "61355a1c-099e-458b-8e1c-6af51826d2be",
           "slug": "full-stack-developer",
           "title": "Full Stack Developer",
           "location": "San Francisco, CA",
@@ -51,11 +68,11 @@
             "TypeScript",
             "AWS"
           ],
-          "created_at": "2026-02-10T07:14:56.096929+00:00",
-          "updated_at": "2026-02-10T07:14:56.096930+00:00"
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
         },
         {
-          "id": "8746274c-718d-4326-a024-6f3c0d9a191e",
+          "id": "c7137651-574f-4b1b-bebd-cd80eed8522f",
           "slug": "ml-ops-engineer",
           "title": "MLOps Engineer",
           "location": "Remote",
@@ -69,11 +86,11 @@
             "AWS",
             "Terraform"
           ],
-          "created_at": "2026-02-10T07:14:56.096936+00:00",
-          "updated_at": "2026-02-10T07:14:56.096937+00:00"
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
         },
         {
-          "id": "c3980648-1f77-4fce-b104-78c93a09d269",
+          "id": "aafa54ff-7a68-4a3d-a52c-5d640d7d9b9c",
           "slug": "data-scientist",
           "title": "Data Scientist",
           "location": "London, UK",
@@ -86,11 +103,11 @@
             "Statistics",
             "Tableau"
           ],
-          "created_at": "2026-02-10T07:14:56.096941+00:00",
-          "updated_at": "2026-02-10T07:14:56.096943+00:00"
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
         },
         {
-          "id": "9eed941d-837c-4529-bd0b-165d1cca89cf",
+          "id": "6f060e9f-c847-4d18-a799-a04382fb026a",
           "slug": "ai-research-intern",
           "title": "AI Research Intern",
           "location": "Remote",
@@ -103,35 +120,35 @@
             "NLP",
             "Computer Vision"
           ],
-          "created_at": "2026-02-10T07:14:56.096951+00:00",
-          "updated_at": "2026-02-10T07:14:56.096952+00:00"
+          "created_at": "2026-02-10T07:37:29.294555+00:00",
+          "updated_at": "2026-02-10T07:37:29.294555+00:00"
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.487300"
+      "timestamp": "2026-02-10T07:39:04.851869"
     },
     {
       "test": "Get Single Job",
       "success": true,
       "response": {
-        "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
-        "slug": "product-designer-ai",
-        "title": "Product Designer \u2014 AI Products",
-        "location": "New York, NY",
+        "id": "8526b274-aab3-4da1-9a48-5a3b0884fad2",
+        "slug": "senior-ai-engineer",
+        "title": "Senior AI Engineer",
+        "location": "Remote / London",
         "type": "Full-time",
-        "seniority": "Mid-Level",
-        "description": "Design intuitive interfaces for complex AI-powered products. Collaborate with engineers and product managers to create seamless user experiences that make AI accessible and delightful.",
+        "seniority": "Senior",
+        "description": "Lead the development of cutting-edge AI solutions for enterprise clients. You'll work with large language models, computer vision systems, and reinforcement learning frameworks to build products that shape the future of technology.",
         "tags": [
-          "Figma",
-          "UX Research",
-          "Design Systems",
-          "Prototyping"
+          "Python",
+          "PyTorch",
+          "LLMs",
+          "MLOps"
         ],
-        "created_at": "2026-02-10T07:14:56.096919+00:00",
-        "updated_at": "2026-02-10T07:14:56.096920+00:00"
+        "created_at": "2026-02-10T07:37:29.294555+00:00",
+        "updated_at": "2026-02-10T07:37:29.294555+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.565749"
+      "timestamp": "2026-02-10T07:39:04.933020"
     },
     {
       "test": "Admin Login Failure",
@@ -140,26 +157,36 @@
         "detail": "Invalid credentials"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.604872"
+      "timestamp": "2026-02-10T07:39:05.012709"
     },
     {
       "test": "Admin Login Success",
       "success": true,
       "response": {
         "success": true,
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5NTEwMSwiaWF0IjoxNzcwNzA4NzAxfQ._7fkZsEnRanvp9FWhCzGgZwpY6_V6qjd2dy-ayEN668",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcm9qZWN0cGlubm92YXRpb25zLmNvbSIsImV4cCI6MTc3MDc5NTU0NSwiaWF0IjoxNzcwNzA5MTQ1fQ.XRXFOPk7UznclhoK5tT79VjECJFxRen0Ro8mxb76SLk",
         "admin": {
           "id": "84cb1403-e19e-4d6a-90e9-50f21344b4fe",
           "email": "admin@projectpinnovations.com"
         }
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.701266"
+      "timestamp": "2026-02-10T07:39:05.107728"
     },
     {
       "test": "Get Applications",
       "success": true,
       "response": [
+        {
+          "id": "79523f53-0e05-4985-addc-6c1284901493",
+          "name": "Test Applicant",
+          "email": "test@example.com",
+          "message": "This is a test application submission",
+          "job_id": null,
+          "job_title": null,
+          "resume_path": "ca147984-6312-4c27-8596-91041e64a016.pdf",
+          "created_at": "2026-02-10T07:31:41.973110+00:00"
+        },
         {
           "id": "983627e4-696f-439d-9acd-76691f95b6b9",
           "name": "Test Applicant",
@@ -222,13 +249,13 @@
         }
       ],
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.743037"
+      "timestamp": "2026-02-10T07:39:05.150349"
     },
     {
       "test": "Create Job",
       "success": true,
       "response": {
-        "id": "3404c31c-1b6d-457e-97d1-f6274790526a",
+        "id": "c68518c7-2253-4d01-991e-d0a4610122a3",
         "slug": "test-engineer-position",
         "title": "Test Engineer Position",
         "location": "Remote",
@@ -240,51 +267,51 @@
           "Automation",
           "Python"
         ],
-        "created_at": "2026-02-10T07:31:41.777261+00:00",
-        "updated_at": "2026-02-10T07:31:41.777261+00:00"
+        "created_at": "2026-02-10T07:39:05.187436+00:00",
+        "updated_at": "2026-02-10T07:39:05.187436+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.782065"
+      "timestamp": "2026-02-10T07:39:05.191630"
     },
     {
       "test": "Update Job",
       "success": true,
       "response": {
-        "id": "767b08d0-3e4f-41a0-ba72-82c22798258b",
+        "id": "8526b274-aab3-4da1-9a48-5a3b0884fad2",
         "slug": "updated-test-job-title",
         "title": "Updated Test Job Title",
-        "location": "New York, NY",
+        "location": "Remote / London",
         "type": "Full-time",
-        "seniority": "Mid-Level",
+        "seniority": "Senior",
         "description": "This job description was updated by automated tests",
         "tags": [
-          "Figma",
-          "UX Research",
-          "Design Systems",
-          "Prototyping"
+          "Python",
+          "PyTorch",
+          "LLMs",
+          "MLOps"
         ],
-        "created_at": "2026-02-10T07:14:56.096919+00:00",
-        "updated_at": "2026-02-10T07:31:41.854929+00:00"
+        "created_at": "2026-02-10T07:37:29.294555+00:00",
+        "updated_at": "2026-02-10T07:39:05.265909+00:00"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.859800"
+      "timestamp": "2026-02-10T07:39:05.270586"
     },
     {
       "test": "Delete Job",
       "success": true,
       "response": null,
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.939455"
+      "timestamp": "2026-02-10T07:39:05.355145"
     },
     {
       "test": "Apply with Valid File",
       "success": true,
       "response": {
         "message": "Application submitted successfully",
-        "id": "79523f53-0e05-4985-addc-6c1284901493"
+        "id": "0ae137f8-75ba-4b10-8ba0-8319c5135532"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:41.978545"
+      "timestamp": "2026-02-10T07:39:05.394023"
     },
     {
       "test": "Apply with Invalid File",
@@ -293,7 +320,7 @@
         "detail": "Invalid file type. Allowed: .pdf, .doc, .docx"
       },
       "error": null,
-      "timestamp": "2026-02-10T07:31:42.020663"
+      "timestamp": "2026-02-10T07:39:05.468106"
     }
   ]
 }
