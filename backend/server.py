@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+import resend
 import os
 import logging
 import uuid
@@ -27,8 +28,10 @@ JWT_SECRET = os.environ.get('JWT_SECRET', 'projectp-secret-key-change-in-prod')
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
 
-# Email Configuration (MOCKED - logs to DB)
-EMAIL_TO = 'vishalpala@projectpinnovations.com'
+# Email Configuration - REAL RESEND INTEGRATION
+resend.api_key = os.environ.get('RESEND_API_KEY')
+EMAIL_FROM = os.environ.get('EMAIL_FROM', 'onboarding@resend.dev')
+EMAIL_TO = os.environ.get('EMAIL_TO', 'vishalpala@projectpinnovations.com')
 
 # File Upload Configuration
 UPLOAD_DIR = ROOT_DIR / "uploads"
@@ -146,22 +149,55 @@ async def get_current_admin(request: Request):
     return admin
 
 async def send_email(to: str, subject: str, html_body: str) -> dict:
-    """Mock email - log to console and store in DB"""
-    email_log = {
-        "id": str(uuid.uuid4()),
-        "to": to,
-        "subject": subject,
-        "body": html_body,
-        "sent_at": datetime.now(timezone.utc).isoformat(),
-        "status": "sent"
-    }
-    await db.email_logs.insert_one(email_log)
-    logger.info(f"[MOCK EMAIL] To: {to} | Subject: {subject}")
-    logger.info(f"[MOCK EMAIL] Body:\n{html_body}")
-    return {
-        "success": True,
-        "email_log_id": email_log["id"]
-    }
+    """Send email via Resend and log to database"""
+    try:
+        # Send email using Resend API
+        params = {
+            "from": EMAIL_FROM,
+            "to": [to],
+            "subject": subject,
+            "html": html_body
+        }
+        resend_response = resend.Emails.send(params)
+        
+        # Log email to database
+        email_log = {
+            "id": str(uuid.uuid4()),
+            "to": to,
+            "subject": subject,
+            "body": html_body,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "resend_id": resend_response.get('id', ''),
+            "status": "sent"
+        }
+        await db.email_logs.insert_one(email_log)
+        logger.info(f"✅ Email sent via Resend to {to} | Subject: {subject}")
+        
+        return {
+            "success": True,
+            "email_log_id": email_log["id"],
+            "resend_id": resend_response.get('id', '')
+        }
+    except Exception as e:
+        logger.error(f"❌ Failed to send email: {str(e)}")
+        
+        # Log failed attempt
+        email_log = {
+            "id": str(uuid.uuid4()),
+            "to": to,
+            "subject": subject,
+            "body": html_body,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "status": "failed",
+            "error": str(e)
+        }
+        await db.email_logs.insert_one(email_log)
+        
+        return {
+            "success": False,
+            "error": str(e),
+            "email_log_id": email_log["id"]
+        }
 
 # --- Rate Limiting ---
 
@@ -354,7 +390,7 @@ async def submit_application(
     }
     await db.applications.insert_one(application)
 
-    # Send notification email
+    # Send notification email via Resend
     subject = f"New Application: {name} — {job_title or 'General'}"
     html_body = f"""
     <h2>New Job Application Received</h2>
@@ -372,7 +408,7 @@ async def submit_application(
 
 @api_router.get("/test-email")
 async def test_email():
-    """Test email endpoint"""
+    """Test email endpoint - sends real email via Resend"""
     subject = "Test Email from Project P Innovations"
     html_body = """
     <h2>Test Email</h2>
@@ -382,10 +418,17 @@ async def test_email():
     
     result = await send_email(EMAIL_TO, subject, html_body)
     
-    return {
-        "message": "Test email sent (mocked)",
-        "email_log_id": result["email_log_id"]
-    }
+    if result["success"]:
+        return {
+            "message": "Test email sent successfully via Resend",
+            "email_log_id": result["email_log_id"],
+            "resend_id": result.get("resend_id", "")
+        }
+    else:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to send email: {result.get('error', 'Unknown error')}"
+        )
 
 # --- Admin Routes ---
 
