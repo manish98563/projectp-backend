@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Upload, FileText, X, CheckCircle, Loader2 } from "lucide-react";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || ''}/api`;
 
 const fadeUp = {
   initial: { opacity: 0, y: 18 },

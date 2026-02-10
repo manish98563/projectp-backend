@@ -19,7 +19,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || ''}/api`;
 
 function getAuthHeaders() {
   const token = localStorage.getItem("admin_token");
