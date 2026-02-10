@@ -206,7 +206,8 @@ class ProjectPAPITester:
             if response.status_code == 201:
                 created_job = response.json()
                 job_id = created_job['id']
-                return self.run_test("Delete Job", "DELETE", f"admin/jobs/{job_id}", 204)
+                success, response_data = self.run_test("Delete Job", "DELETE", f"admin/jobs/{job_id}", 204)
+                return success
             else:
                 return self.log_result("Delete Job", False, None, f"Failed to create job for deletion test: {response.status_code}")
         except Exception as e:
