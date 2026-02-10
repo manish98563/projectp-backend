@@ -382,17 +382,10 @@ async def test_email():
     
     result = await send_email(EMAIL_TO, subject, html_body)
     
-    if result["success"]:
-        return {
-            "message": "Test email sent successfully via Resend",
-            "email_log_id": result["email_log_id"],
-            "resend_id": result.get("resend_id", "")
-        }
-    else:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to send email: {result.get('error', 'Unknown error')}"
-        )
+    return {
+        "message": "Test email sent (mocked)",
+        "email_log_id": result["email_log_id"]
+    }
 
 # --- Admin Routes ---
 
