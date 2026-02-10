@@ -446,16 +446,17 @@ function ApplicationsList({ applications }) {
                 )}
               </div>
               <div className="flex items-center gap-2 shrink-0 ml-4">
-                <a
-                  href={`${API}/admin/download-resume/${app.resume_path}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => {
+                    const token = localStorage.getItem("admin_token");
+                    window.open(`${API}/admin/download-resume/${app.resume_path}?token=${token}`, "_blank");
+                  }}
                   data-testid={`download-resume-${app.id}`}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#FF7A2A] bg-[#FF7A2A]/10 rounded-lg hover:bg-[#FF7A2A]/20 transition-colors duration-200"
                 >
                   <Download size={12} />
                   Resume
-                </a>
+                </button>
               </div>
             </div>
             <p className="text-[10px] text-[#9FB0C8]/40 mt-3">
