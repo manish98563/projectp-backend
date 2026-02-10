@@ -179,7 +179,8 @@ class ProjectPAPITester:
                         "title": "Updated Test Job Title",
                         "description": "This job description was updated by automated tests"
                     }
-                    return self.run_test("Update Job", "PUT", f"admin/jobs/{job_id}", 200, data=update_data)
+                    success, response_data = self.run_test("Update Job", "PUT", f"admin/jobs/{job_id}", 200, data=update_data)
+                    return success
             
             return self.log_result("Update Job", False, None, "No jobs available to test update endpoint")
         except Exception as e:
