@@ -239,7 +239,8 @@ class ProjectPAPITester:
             'message': 'This is a test application submission'
         }
         
-        return self.run_test("Apply with Valid File", "POST", "apply", 201, data=form_data, files=files)
+        success, response = self.run_test("Apply with Valid File", "POST", "apply", 201, data=form_data, files=files)
+        return success
 
     def test_apply_with_invalid_file(self):
         """Test application submission with invalid file type"""
@@ -254,7 +255,8 @@ class ProjectPAPITester:
             'message': 'This should fail due to invalid file type'
         }
         
-        return self.run_test("Apply with Invalid File", "POST", "apply", 400, data=form_data, files=files)
+        success, response = self.run_test("Apply with Invalid File", "POST", "apply", 400, data=form_data, files=files)
+        return success
 
     def run_all_tests(self):
         """Run all API tests in sequence"""
